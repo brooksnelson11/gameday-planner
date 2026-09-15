@@ -1,0 +1,21 @@
+name: Refresh schedule data
+on:
+  schedule:
+    - cron: "20 4,10,16,21 * * *"   # UTC; a few times a day, more often is unnecessary
+  workflow_dispatch:
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Rebuild data/games.json from ESPN's public scoreboard
+        run: GD_OUT=data/games.json GD_GEO=geocode_cache.json python3 build_gameday_data.py
+      - name: Commit if changed
+        run: |
+          git config user.name "gameday-bot"
+          git config user.email "gameday-bot@users.noreply.github.com"
+          git add data/games.json geocode_cache.json
+          git diff --cached --quiet || git commit -m "Refresh schedule data"
+          git push
