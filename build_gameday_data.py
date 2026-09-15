@@ -48,7 +48,10 @@ for e in events:
     if c.get("broadcasts"): bc = (c["broadcasts"][0].get("names") or [""])[0]
     elif c.get("geoBroadcasts"): bc = ((c["geoBroadcasts"][0].get("media") or {}).get("shortName") or "")
     v = c.get("venue") or {}
-    games.append({"id": e["id"], "wk": (e.get("week") or {}).get("number"), "date": e["date"], "tba": not c.get("timeValid", True),
+    note = next((x.get("headline") for x in (c.get("notes") or []) if x.get("headline")), None)
+    tk = (c.get("tickets") or [{}])[0]; tix = ((tk.get("links") or [{}])[0].get("href") or "").split("?")[0]
+    games.append({"id": e["id"], "wk": (e.get("week") or {}).get("number"), "date": e["date"], "tba": not c.get("timeValid", True), "dtba": not c.get("dateValid", True),
+                  "tix": tix or None, "tixFrom": tk.get("summary") or None, "note": note,
                   "neutral": bool(c.get("neutralSite")), "conf": bool(c.get("conferenceCompetition")), "venue": v.get("fullName", ""),
                   "city": (v.get("address") or {}).get("city", ""), "state": (v.get("address") or {}).get("state", ""), "tv": bc,
                   "status": status, "clock": st.get("shortDetail", ""), "h": side(comps["home"]), "a": side(comps["away"]), "name": e.get("shortName", "")})
