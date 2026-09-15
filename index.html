@@ -1,13 +1,14 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Gameday · 2026 schedule planner</title>
 <link rel="preconnect" href="https://a.espncdn.com">
+<link rel="icon" type="image/svg+xml" href="gameday-icon.svg"><link rel="icon" type="image/png" sizes="192x192" href="gameday-icon-192.png"><link rel="apple-touch-icon" sizes="180x180" href="gameday-icon-180.png"><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0b0d12"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Gameday">
 <style>
 :root{--bg:#0b0d12;--bg2:#12151d;--card:#171b25;--line:#252a37;--txt:#eef1f6;--mut:#8b93a7;--acc:#ff8200;--win:#22c55e;--loss:#ef4444;--gold:#fbbf24;--r:14px}
 *{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif;-webkit-font-smoothing:antialiased}
 a{color:inherit}button{font:inherit;cursor:pointer}
 .top{position:sticky;top:0;z-index:20;background:linear-gradient(180deg,#0b0d12 0%,rgba(11,13,18,.92) 100%);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
 .top .in{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:10px 16px}
-.wm{font-weight:900;letter-spacing:-.04em;font-size:22px;display:flex;align-items:center;gap:8px}.wm svg{filter:drop-shadow(0 2px 4px rgba(0,0,0,.5))}
+.wm{font-weight:900;letter-spacing:-.04em;font-size:22px;display:flex;align-items:center;gap:8px}.wm img{width:30px;height:30px;filter:drop-shadow(0 2px 6px rgba(0,0,0,.5))}
 .wk{font-size:12px;color:var(--mut);font-weight:600;letter-spacing:.06em;text-transform:uppercase}
 .sp{flex:1}
 .tb{background:var(--card);border:1px solid var(--line);color:var(--txt);border-radius:999px;padding:8px 14px;font-weight:700;font-size:13px;display:flex;align-items:center;gap:6px}
@@ -79,7 +80,7 @@ a{color:inherit}button{font:inherit;cursor:pointer}
 @media(max-width:760px){.pick{grid-template-columns:1fr 1fr;gap:8px}.vs{grid-column:1/-1;order:3;height:34px}.hero{min-height:110px;padding:12px 10px}.hero h2{font-size:14.5px}.hero .rec{font-size:19px}.hero .meta{font-size:11px}.hero .chg{top:6px;right:6px;padding:3px 8px;font-size:10px}.hero .row1{gap:8px;margin-top:22px}.hero .row1 img{width:40px;height:40px}.hero .next{display:none}
 .grid{grid-template-columns:1fr;gap:8px}.wkrow{display:grid;grid-template-columns:1fr 1fr;gap:8px}.mid{grid-column:1/-1;flex-direction:row;justify-content:center;padding:0 0 2px;order:-1;flex-wrap:wrap}.mid .ic{font-size:15px}.g{padding:10px 9px}.g .t{gap:7px}.g .t img{width:28px;height:28px}.g .opp{font-size:13px}.g .res{font-size:14px}.g .sub{font-size:11px}.tag{font-size:9.5px;padding:2px 5px}.legend{display:none}}
 </style></head><body>
-<div class="top"><div class="in"><div class="wm"><svg viewBox="0 0 40 24" width="32" height="19" aria-hidden="true"><ellipse cx="20" cy="12" rx="19" ry="10.5" fill="#8b4a1e" stroke="#5b2f10" stroke-width="1.2"/><path d="M5 6.8q15 -4.2 30 0M5 17.2q15 4.2 30 0" stroke="#f3e9dc" stroke-width="1.2" fill="none" opacity=".9"/><path d="M13 12h14" stroke="#fff" stroke-width="1.9" stroke-linecap="round"/><path d="M15.5 9.6v4.8M18.5 9.6v4.8M21.5 9.6v4.8M24.5 9.6v4.8" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>GAMEDAY</div><div class="wk" id="wkLbl">2026 season</div><div class="sp"></div><button class="tb teamb" id="teamBtn"><span id="teamBtnIn">Pick team</span> ▾</button><button class="tb" id="myBtn">🎟 My games <span class="n" id="myN">0</span></button><button class="tb teamb" id="cmpBtn"><span id="cmpBtnIn">＋ Second team</span></button><button class="tb" id="tripBtn">🧭 Road trips</button><button class="tb acc" id="crewBtn">👥 Crew <span class="n" id="crewN">0</span></button></div></div>
+<div class="top"><div class="in"><div class="wm"><img src="gameday-icon.svg" alt="" width="30" height="30">GAMEDAY</div><div class="wk" id="wkLbl">2026 season</div><div class="sp"></div><button class="tb teamb" id="teamBtn"><span id="teamBtnIn">Pick team</span> ▾</button><button class="tb" id="myBtn">🎟 My games <span class="n" id="myN">0</span></button><button class="tb teamb" id="cmpBtn"><span id="cmpBtnIn">＋ Second team</span></button><button class="tb" id="tripBtn">🧭 Road trips</button><button class="tb acc" id="crewBtn">👥 Crew <span class="n" id="crewN">0</span></button></div></div>
 <div class="ticker"><div class="rail" id="ticker"></div></div>
 <div class="wrap">
   <div class="pick solo" id="pick">
@@ -111,7 +112,7 @@ a{color:inherit}button{font:inherit;cursor:pointer}
   <div class="note">Weekends when <b id="tripA"></b> is off or on the road and one of the crew's schools is at home. Ranked by how big that home game is. Tap one to jump to that week.</div>
   <div id="tripList" style="margin-top:10px"></div>
 </div></div>
-<div class="ob" id="ob"><div class="in"><h1 id="obH">Who's your team?</h1><p id="obP">Your schedule comes first. Big games get marked, and every weekend shows what to travel for. You can compare against a friend's school any time.</p><input id="obQ" placeholder="Search any FBS school…" autocomplete="off"><div class="res" id="obRes"></div><div class="lg" id="obSec"></div><button class="rm2" id="obRm" style="display:none">Remove second team</button></div></div>
+<div class="ob" id="ob"><div class="in"><img src="gameday-icon.svg" alt="" width="72" height="72" style="display:block;margin:0 0 14px;filter:drop-shadow(0 8px 20px rgba(255,130,0,.25))"><h1 id="obH">Who's your team?</h1><p id="obP">Your schedule comes first. Big games get marked, and every weekend shows what to travel for. You can compare against a friend's school any time.</p><input id="obQ" placeholder="Search any FBS school…" autocomplete="off"><div class="res" id="obRes"></div><div class="lg" id="obSec"></div><button class="rm2" id="obRm" style="display:none">Remove second team</button></div></div>
 <div class="mo" id="mo"><div class="mc" id="mc"></div></div><canvas id="cf"></canvas>
 <div class="toast" id="toast"></div>
 <script>
