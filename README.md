@@ -9,7 +9,7 @@ External calls made by the page: ESPN's CDN (team logos), api.weather.gov (kicko
 ## Deploy on GitHub Pages
 1. Create a repo, push these files (keep `index.html` at the root and `data/games.json` next to it).
 2. Settings → Pages → Deploy from branch → `main` / root.
-3. The included workflow (`.github/workflows/refresh-data.yml`) rebuilds `data/games.json` a few times a day so scores and rankings stay current. Enable Actions and, under Settings → Actions → General, allow "Read and write permissions" for the workflow.
+3. To keep scores current, move `ci/refresh-data.yml` to `.github/workflows/refresh-data.yml` (do it in the GitHub web editor: Add file → paste). Then Settings → Actions → General → allow "Read and write permissions". It rebuilds `data/games.json` a few times a day.
 
 ## Rebuild the data by hand
 ```
