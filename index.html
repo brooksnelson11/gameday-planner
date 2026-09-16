@@ -92,6 +92,10 @@ a{color:inherit}button{font:inherit;cursor:pointer}
 .addf{background:var(--acc);border:0;color:#111;border-radius:999px;padding:9px 14px;font-weight:900;font-size:13px;white-space:nowrap}
 @media(max-width:760px){.top .in{gap:8px;padding:8px 10px}.wm{font-size:18px}.wm img{width:26px;height:26px}.top .wk{display:none}.addf{padding:8px 11px;font-size:12px}.teamb{padding:6px 10px}#teamBtnIn{font-size:0;display:inline-flex;align-items:center}#teamBtnIn img{width:22px;height:22px}.ghostChip{padding:3px 8px;font-size:10px}}
 /* name */
+.aflist,.fsched{max-height:58vh;overflow:auto;margin-top:8px}.mem .x button.acc{background:var(--acc);color:#111;border-color:var(--acc)}
+.netChip{background:var(--card);border:1px solid var(--line);color:var(--mut);border-radius:999px;padding:4px 10px;font-size:11px;font-weight:800}
+.hero .rmB{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:999px;width:28px;height:28px;font-size:16px;line-height:1;display:flex;align-items:center;justify-content:center}
+.side .sec.small{padding-top:14px}
 .nm2{display:flex;gap:8px;margin-top:12px}.nm2 input{flex:1;min-width:0;background:var(--bg);border:1px solid var(--line);color:var(--txt);border-radius:10px;padding:11px 12px;font-size:16px;outline:none}
 /* my schedule */
 #myHead{color:var(--mut);font-size:13px;margin-bottom:8px}
@@ -116,7 +120,7 @@ a{color:inherit}button{font:inherit;cursor:pointer}
 @media(max-width:760px){.pick{grid-template-columns:1fr 1fr;gap:8px}.vs{grid-column:1/-1;order:3;height:34px}.hero{min-height:110px;padding:12px 10px}.hero h2{font-size:14.5px}.hero .rec{font-size:19px}.hero .meta{font-size:11px}.hero .chg{top:6px;right:6px;padding:3px 8px;font-size:10px}.hero .row1{gap:8px;margin-top:22px}.hero .row1 img{width:40px;height:40px}.hero .next{display:none}
 .grid{grid-template-columns:1fr;gap:8px}.wkrow{display:grid;grid-template-columns:1fr 1fr;gap:8px}.mid{grid-column:1/-1;flex-direction:row;justify-content:center;padding:0 0 2px;order:-1;flex-wrap:wrap}.mid .ic{font-size:15px}.g{padding:10px 9px}.g .t{gap:7px}.g .t img{width:28px;height:28px}.g .opp{font-size:13px}.g .res{font-size:14px}.g .sub{font-size:11px}.tag{font-size:9.5px;padding:2px 5px}.legend{display:none}}
 </style></head><body>
-<div class="top"><div class="in"><button class="burger" id="burger" aria-label="Menu"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><div class="wm"><img src="gameday-icon.svg" alt="" width="30" height="30">GAMEDAY</div><div class="wk" id="wkLbl">2026 season</div><div class="sp"></div><span class="ghostChip" id="ghostChip" style="display:none">👻 Ghost</span><button class="addf" id="addFriend">＋ Add friend</button><button class="tb teamb" id="teamBtn"><span id="teamBtnIn">Pick team</span> ▾</button></div></div>
+<div class="top"><div class="in"><button class="burger" id="burger" aria-label="Menu"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><div class="wm"><img src="gameday-icon.svg" alt="" width="30" height="30">GAMEDAY</div><div class="wk" id="wkLbl">2026 season</div><div class="sp"></div><span class="netChip" id="netChip" style="display:none" title="Friends across phones need the shared list — this copy is on this phone only">this phone only</span><span class="ghostChip" id="ghostChip" style="display:none">👻 Ghost</span><button class="addf" id="addFriend">＋ Add friend</button><button class="tb teamb" id="teamBtn"><span id="teamBtnIn">Pick team</span> ▾</button></div></div>
 <div class="sideBg" id="sideBg"></div>
 <aside class="side" id="side">
   <div class="hd"><img src="gameday-icon.svg" alt="" width="24" height="24">GAMEDAY<button id="sideX">×</button></div>
@@ -151,7 +155,8 @@ a{color:inherit}button{font:inherit;cursor:pointer}
   <div class="sug" id="sug" style="display:none"><button id="sugBtn">💡 Suggest something</button></div>
 </div>
 <div class="pane" id="crew"><div class="hd">👥 Friends <button id="crewX">×</button></div><div class="bd">
-  <div class="note">Add a friend and their school. Tap <b>Going</b> on any game and it shows on it. Searching every user by name is the next build.</div>
+  <div id="frList"></div>
+  <div class="note" style="margin-top:10px">Tap <b>＋ Add friend</b> up top to find anyone on Gameday by name. Below: people added on this phone only.</div>
   <div class="f" style="margin-top:10px"><input id="mName" placeholder="Name"><input id="mSchool" placeholder="School (type to search)" list="schools"><button id="mAdd">Add</button></div><datalist id="schools"></datalist>
   <div id="mList"></div>
   <div class="crewwk"><h3 style="font-size:13px;margin:6px 0">Where everyone's school plays <span id="cwWk" style="color:var(--mut);font-weight:600"></span></h3><div id="cw"></div></div>
@@ -212,7 +217,6 @@ function resultFor(g,id){ const me=g.h.id===id?g.h:g.a, op=g.h.id===id?g.a:g.h; 
 function winLbl(ti){ return (ti.flex?'Flex: ':'')+esc(shortWin(ti.win))+(ti.flex?'':' (TBA)'); }
 function winHour(ti){ if(!ti||!ti.win) return 15; const m=ti.win.match(/(\d{1,2})(?::(\d{2}))?/); if(!m) return 15; let h=+m[1]; const ap=(ti.win.match(/am|pm/i)||[''])[0].toLowerCase(); if(ap==='pm'&&h<12) h+=12; else if(!ap&&h<9) h+=12; return h+(m[2]?+m[2]/60:0); }
 function shortWin(w){ return w.replace(/\s*ET\s*$/i,'').replace(/(\d)\s*-\s*(\d)/g,'$1–$2').replace(/pm/gi,'pm'); }
-function goers(g){ const ids=GOING[g.id]||[]; const all=crew(); const out=ids.map(i=>all.find(m=>m.id===i)).filter(Boolean);  return out; }
 function av(m){ const t=tm(m.team); return '<span class="av" style="background:#'+t.color+';color:#'+(t.alt||'fff')+'" title="'+esc(m.name)+'">'+esc(m.name.slice(0,2).toUpperCase())+'</span>'; }
 function me(){ return CREW.find(m=>m.me)||CREW[0]||null; }
 function card(g,id,h2h){ if(!g) return '<div class="g bye">BYE</div>'; const home=g.h.id===id, op=tm(home?g.a.id:g.h.id), opr=home?g.a.rank:g.h.rank; const hy=hype(g); const gs=goers(g); const m=me(); const on=m&&(GOING[g.id]||[]).includes(m.id);
@@ -234,10 +238,10 @@ function verdict(ga,gb){ const a=tm(A),b=tm(B); const cityB=gb?(gb.h.id===B?gb.c
   return ['','—',a.short+' away in '+(ga.city||''),b.short+' is off']; }
 function hero(el,id,side){ const t=tm(id); const gs=gamesOf(id); const nx=gs.find(g=>g.status!=='final'); const rk=rankOf(id);
   el.style.background='linear-gradient(135deg,#'+t.color+' 0%,#'+t.color+'cc 60%,#0b0d12 140%)'; el.style.color='#fff';
-  el.innerHTML='<button class="chg" data-side="'+side+'">Change ▾</button><img class="lg" src="'+t.logo+'" alt=""><div class="row1"><img src="'+t.logo+'" alt=""><div><h2>'+(rk?'<span class="rk">'+rk+'</span>':'')+esc(t.name)+'</h2><div class="meta">'+esc(t.conf||'')+(t.conf?' · ':'')+gs.filter(g=>g.h.id===id).length+' home games</div></div><div class="rec">'+record(id)+'<small>RECORD</small></div></div>'+(nx?'<div class="next"><img src="'+tm(nx.h.id===id?nx.a.id:nx.h.id).logo+'" alt="">Next: '+(nx.h.id===id?'vs ':'at ')+esc(tm(nx.h.id===id?nx.a.id:nx.h.id).short)+' · '+esc(et(nx.date,{weekday:'short',month:'short',day:'numeric'}))+(nx.tba?' · '+((tbaInfo(nx)||{}).win?winLbl(tbaInfo(nx)):'TBA'):' · '+esc(et(nx.date,{hour:'numeric',minute:'2-digit'})))+'</div>':'<div class="next">Season complete</div>')+
+  el.innerHTML=(side==='B'?'<button class="rmB" title="Remove from comparison">×</button>':'')+'<button class="chg" data-side="'+side+'">Change ▾</button><img class="lg" src="'+t.logo+'" alt=""><div class="row1"><img src="'+t.logo+'" alt=""><div><h2>'+(rk?'<span class="rk">'+rk+'</span>':'')+esc(t.name)+'</h2><div class="meta">'+esc(t.conf||'')+(t.conf?' · ':'')+gs.filter(g=>g.h.id===id).length+' home games</div></div><div class="rec">'+record(id)+'<small>RECORD</small></div></div>'+(nx?'<div class="next"><img src="'+tm(nx.h.id===id?nx.a.id:nx.h.id).logo+'" alt="">Next: '+(nx.h.id===id?'vs ':'at ')+esc(tm(nx.h.id===id?nx.a.id:nx.h.id).short)+' · '+esc(et(nx.date,{weekday:'short',month:'short',day:'numeric'}))+(nx.tba?' · '+((tbaInfo(nx)||{}).win?winLbl(tbaInfo(nx)):'TBA'):' · '+esc(et(nx.date,{hour:'numeric',minute:'2-digit'})))+'</div>':'<div class="next">Season complete</div>')+
   '<div class="search" id="s'+side+'"><input placeholder="Search any FBS school…"><div class="list"></div></div>';
   const s=el.querySelector('.search'), inp=s.querySelector('input'), list=s.querySelector('.list');
-  el.querySelector('.chg').onclick=()=>{ openOb(side==='A'?'A':'B2'); };
+  el.querySelector('.chg').onclick=()=>{ openOb(side==='A'?'A':'B2'); }; const rm=el.querySelector('.rmB'); if(rm) rm.onclick=e=>{ e.stopPropagation(); setSecond(null); toast('Comparison removed'); };
   function fill(q){ q=q.toLowerCase(); const items=Object.entries(T).filter(([i,t])=>t.conf&&CONFS.includes(t.conf)&&(!q||t.name.toLowerCase().includes(q)||t.ab.toLowerCase().includes(q))).sort((x,y)=>(CONFS.indexOf(x[1].conf)-CONFS.indexOf(y[1].conf))||x[1].name.localeCompare(y[1].name)).slice(0,60);
     list.innerHTML=items.map(([i,t])=>'<div class="it" data-id="'+i+'"><img src="'+t.logo+'" alt="">'+esc(t.name)+'<span>'+esc(t.conf)+'</span></div>').join('')||'<div class="it">No match</div>';
     list.querySelectorAll('.it[data-id]').forEach(x=>x.onclick=()=>{ if(side==='A') A=x.dataset.id; else B=x.dataset.id; s.classList.remove('on'); draw(); }); }
@@ -265,7 +269,7 @@ function drawSolo(){ const a=tm(A); const ga=gamesOf(A); const gb=B2?gamesOf(B2)
     if(done) past.push(row); else h+=row; });
   h+=pastHtml(past);
   $('#grid').innerHTML=h||'<div class="note" style="grid-column:1/-1;padding:20px;text-align:center">Nothing matches this view.</div>'; }
-function draw(){ if(!A){ $('#ob').classList.add('on'); return; } $('#ob').classList.remove('on'); localStorage.setItem('gd_team',A); if(!PROF.first&&!$('#mo').classList.contains('on')) setTimeout(()=>askName(true),300); else ensureMe(); paintMe(); const ta=tm(A); $('#teamBtnIn').innerHTML='<img src="'+ta.logo+'" alt=""> '+esc(ta.short);
+function draw(){ if(!A){ $('#ob').classList.add('on'); return; } $('#ob').classList.remove('on'); localStorage.setItem('gd_team',A); if(!PROF.first&&!$('#mo').classList.contains('on')) setTimeout(()=>askName(true),300); else ensureMe(); paintMe(); if(typeof ME!=='undefined'&&ME&&ONLINE&&A&&ME.team!==A){ ME.team=A; apiJ('/me',{method:'PUT',body:JSON.stringify({token:tok(),team:A})}).catch(()=>{}); } const ta=tm(A); $('#teamBtnIn').innerHTML='<img src="'+ta.logo+'" alt=""> '+esc(ta.short);
   mode='solo'; if(B2===A) B2=null; $('#pick').classList.toggle('solo',!B2); $('#pick').classList.toggle('two',!!B2); $('#grid').classList.toggle('solo',!B2); $('#grid').classList.toggle('solo2',!!B2); $('#cmpBtnIn').innerHTML=B2?'<img src="'+tm(B2).logo+'" alt=""> '+esc(tm(B2).short)+' ▾':'＋ Second team';
   location.hash=B2?'a='+A+'&b='+B2:'a='+A; hero($('#heroA'),A,'A'); if(B2) hero($('#heroB'),B2,'B');
   if(mode==='solo'){ drawSolo(); wirePast(); setTimeout(weather,50); $('#grid').querySelectorAll('.g').forEach((el,i)=>el.style.animationDelay=Math.min(i*25,400)+'ms'); wire($('#grid')); $('#grid').querySelectorAll('.ac').forEach(x=>x.onclick=e=>{ if(e.target.classList.contains('gob')||e.target.closest('.acts')) return; setSecond(x.dataset.b===A?x.dataset.a:x.dataset.b); window.scrollTo({top:0,behavior:'smooth'}); }); $('#crewN').textContent=crew().length; drawCrew(); drawBig(); drawMy(); return; }
@@ -370,7 +374,7 @@ $('#profLink').onclick=()=>{ sideOpen(false); askName(false); };
 /* who you are — once */
 function askName(first){ const mc=$('#mc'); mc.innerHTML='<button class="x" id="moX">×</button><h2 style="margin:0 0 4px">'+(first?'Who are you?':'Your name')+'</h2><div class="sub">'+(first?'Once. This is how friends find you.':'Friends see you by this name.')+'</div><div class="nm2"><input id="pnF" placeholder="First name" autocomplete="given-name" value="'+esc(PROF.first)+'"><input id="pnL" placeholder="Last name" autocomplete="family-name" value="'+esc(PROF.last)+'"></div><div class="yn" style="margin-top:12px"><button class="yes" id="moGo">'+(first?"That's me":'Save')+'</button></div>';
   $('#mo').classList.add('on'); const close=()=>$('#mo').classList.remove('on'); $('#moX').onclick=()=>{ if(first&&!PROF.first){ toast('Name first — it takes two seconds'); return; } close(); }; setTimeout(()=>$('#pnF').focus(),60);
-  const go=()=>{ const f=$('#pnF').value.trim(), l=$('#pnL').value.trim(); if(!f||!l){ toast('First and last, please'); ($('#pnF').value.trim()?$('#pnL'):$('#pnF')).focus(); return; } const fresh=!PROF.first; PROF.first=f; PROF.last=l; saveProf(); ensureMe(); paintMe(); close(); draw(); if(fresh){ toast('Welcome, '+f); setTimeout(()=>{ if(!PROF.tourDone) tour(); },500); } else toast('Saved'); };
+  const go=()=>{ const f=$('#pnF').value.trim(), l=$('#pnL').value.trim(); if(!f||!l){ toast('First and last, please'); ($('#pnF').value.trim()?$('#pnL'):$('#pnF')).focus(); return; } const fresh=!PROF.first; PROF.first=f; PROF.last=l; saveProf(); ensureMe(); paintMe(); close(); draw(); syncMe(); if(fresh){ toast('Welcome, '+f); setTimeout(()=>{ if(!PROF.tourDone) tour(); },500); } else toast('Saved'); };
   $('#moGo').onclick=go; $('#pnL').onkeydown=e=>{ if(e.key==='Enter') go(); }; $('#pnF').onkeydown=e=>{ if(e.key==='Enter') $('#pnL').focus(); }; }
 function paintMe(){ $('#meName').textContent=fullName()||'Add your name'; const m=me(); $('#meTeam').textContent=(m&&m.team&&T&&T[m.team])?tm(m.team).short:''; }
 /* if this device already had a "me" in the crew (old build), keep that name — just split it */
@@ -388,7 +392,7 @@ function drawMy(){ const L=myGames(); $('#myN').textContent=L.length; const m=me
     going.forEach(g=>{ const a=tm(g.a.id),b=tm(g.h.id); const t=tixState(g); const fin=g.status==='final'; h+='<div class="ms'+(past?' past':'')+' t'+tier(hype(g))+'" data-g="'+g.id+'"><div class="r1"><span class="wk">WK '+w+'</span><img src="'+a.logo+'" alt=""><b>'+(g.a.rank?'<span class="rk">'+g.a.rank+'</span>':'')+esc(a.ab)+'</b><span class="at">'+(g.neutral?'vs':'@')+'</span><b>'+(g.h.rank?'<span class="rk">'+g.h.rank+'</span>':'')+esc(b.ab)+'</b><img src="'+b.logo+'" alt=""></div><div class="r2">'+esc(et(g.date,{weekday:'short',month:'short',day:'numeric'}))+(g.tba?' · TBA':' · '+esc(et(g.date,{hour:'numeric',minute:'2-digit'})))+' · '+esc(g.city)+(g.tv?' · '+esc(g.tv):'')+(fin?' · Final '+g.a.score+'–'+g.h.score:'')+'</div>'+(lineHtml(g)?'<div class="r3">'+lineHtml(g)+'</div>':'')+(fin?'':'<div class="r4"><span class="lb">Tickets</span><span class="seg"><button class="'+(t==='yes'?'on':'')+'" data-t="yes">Yes</button><button class="'+(t==='no'?'on':'')+'" data-t="no">Not yet</button></span><button class="who" data-r="'+g.id+'">who\'s in</button></div>')+'</div>'; }); });
   $('#myList').innerHTML=h;
   const up=L.filter(g=>g.status!=='final'); $('#myAll').innerHTML=up.length>1?'<a class="tb" style="display:inline-flex;text-decoration:none" href="'+icsAll(up)+'" download="my-games.ics">📅 Add all '+up.length+' to calendar</a>':'';
-  $('#myList').querySelectorAll('.seg button').forEach(b=>b.onclick=e=>{ e.stopPropagation(); const id=b.closest('.ms').dataset.g; PROF.tix[id]=b.dataset.t; saveProf(); drawMy(); if(b.dataset.t==='no') tixPop(id); });
+  $('#myList').querySelectorAll('.seg button').forEach(b=>b.onclick=e=>{ e.stopPropagation(); const id=b.closest('.ms').dataset.g; PROF.tix[id]=b.dataset.t; saveProf(); drawMy(); pushGoing(id); if(b.dataset.t==='no') tixPop(id); });
   $('#myList').querySelectorAll('.who').forEach(b=>b.onclick=e=>{ e.stopPropagation(); askGoing(b.dataset.r,true); });
   setTimeout(weather,30); }
 function tixPop(id){ const g=G.find(x=>x.id===id); if(!g) return; const mc=$('#mc'); mc.innerHTML='<button class="x" id="moX">×</button>'+gameHead(g)+'<h2 style="margin:10px 0 4px">No tickets yet</h2><div class="sub">'+(g.tixFrom?esc(g.tixFrom)+'. ':'')+'Grab them before the good sections go.</div><div class="yn" style="margin-top:12px">'+(g.tix?'<a class="yes" style="text-decoration:none;text-align:center" href="'+esc(g.tix)+'" target="_blank" rel="noopener">Find tickets ↗</a>':'<span class="sub">No ticket link for this one yet.</span>')+'<button id="moNo">Later</button></div>';
@@ -415,6 +419,62 @@ $('#tourbg').onclick=e=>{ if(e.target.id==='tourbg') tourEnd(); };
 document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&$('#tourbg').classList.contains('on')) tourEnd(); });
 
 paintGhost(); paintMe();
+
+/* ══════════════════ chunk 2: real people — one shared list, friends, their schedules, ghost ══════════════════
+   STORE talks to the shared layer when one is reachable (the VPS copy now; the public copy once its
+   static-safe backend exists). Without one, everything keeps working on this phone exactly as before.
+   The local crew list is never deleted: it shows as "on this phone" until those people join for real. */
+const API_BASE=(location.hostname.endsWith('github.io')||location.protocol==='file:')?null:'/api/gameday';
+const DK='gd_device_v1'; let DEVICE=localStorage.getItem(DK)||(()=>{ const d=Math.random().toString(36).slice(2)+Date.now().toString(36); localStorage.setItem(DK,d); return d; })();
+let ME=null, FRIENDS=[], FR_GOING={}, ONLINE=false;   // ME = {id,name,team,ghost,token}; FR_GOING: gameId -> [{id,name,team}]
+async function apiJ(path,opt){ if(!API_BASE) throw new Error('offline'); const r=await fetch(API_BASE+path,Object.assign({headers:{'Content-Type':'application/json'}},opt||{})); const j=await r.json().catch(()=>({})); if(!r.ok) throw new Error(j.detail||('HTTP '+r.status)); return j; }
+function tok(){ return PROF.token||''; }
+
+/* me: register once (name + team + device), then keep ghost/team in sync */
+async function syncMe(){ if(!API_BASE||!PROF.first) return; try{ const u=await apiJ('/users',{method:'POST',body:JSON.stringify({first:PROF.first,last:PROF.last,team:A||'',device:DEVICE,token:tok()})}); PROF.token=u.token; PROF.uid=u.id; saveProf(); ME=u; ONLINE=true;
+    if(!!u.ghost!==!!PROF.ghost) await apiJ('/me',{method:'PUT',body:JSON.stringify({token:tok(),ghost:!!PROF.ghost})});
+    await pushLocalGoing(); await pullFriends(); $('#netChip').style.display='none'; }
+  catch(e){ ONLINE=false; if(API_BASE){ $('#netChip').style.display=''; } } }
+/* anything marked "going" on this phone before the shared layer existed goes up once */
+async function pushLocalGoing(){ const m=me(); if(!m||PROF.pushed) return; const mine=Object.entries(GOING).filter(([g,ids])=>ids.includes(m.id)).map(([g])=>g); for(const g of mine){ try{ await apiJ('/going',{method:'PUT',body:JSON.stringify({token:tok(),game:g,going:true,tickets:PROF.tix[g]||''})}); }catch(e){ return; } } PROF.pushed=true; saveProf(); }
+async function pullFriends(){ if(!ONLINE) return; try{ const r=await apiJ('/friends?token='+encodeURIComponent(tok())); FRIENDS=r.friends||[]; FR_GOING={}; const put=(u,games)=>Object.keys(games||{}).forEach(g=>{ (FR_GOING[g]=FR_GOING[g]||[]).push({id:u.id,name:u.name,team:u.team||A}); }); FRIENDS.forEach(f=>put(f,f.games)); paintFriends(); draw(); }catch(e){} }
+
+/* who shows on a game: me + my friends who are going (never the whole world) */
+function goers(g){ const m=me(); const out=[]; if(m&&(GOING[g.id]||[]).includes(m.id)) out.push(m); (FR_GOING[g.id]||[]).forEach(f=>{ if(!out.some(x=>x.id===f.id)) out.push(f); });
+  /* people added on this phone only (old crew) still count when marked here */
+  const ids=GOING[g.id]||[]; CREW.forEach(c=>{ if(!c.me&&ids.includes(c.id)&&!out.some(x=>x.id===c.id)) out.push(c); }); return out; }
+/* keep the server in step with Going? taps and ticket answers */
+function pushGoing(gid){ const m=me(); if(!ONLINE||!m) return; const on=(GOING[gid]||[]).includes(m.id); apiJ('/going',{method:'PUT',body:JSON.stringify({token:tok(),game:gid,going:on,tickets:PROF.tix[gid]||''})}).catch(()=>{}); }
+/* save() already runs on every Going? change — push what changed for me */
+let LAST_MINE=null; const _save=save;
+save=function(){ _save(); const m=me(); if(!m) return; const now=new Set(Object.entries(GOING).filter(([g,ids])=>ids.includes(m.id)).map(([g])=>g)); if(LAST_MINE){ [...now].filter(g=>!LAST_MINE.has(g)).forEach(pushGoing); [...LAST_MINE].filter(g=>!now.has(g)).forEach(pushGoing); } LAST_MINE=now; };
+
+/* add a friend: search, or scroll everyone A→Z */
+async function addFriendModal(){ const mc=$('#mc'); mc.innerHTML='<button class="x" id="moX">×</button><h2 style="margin:0 0 4px">Add a friend</h2><div class="sub">'+(ONLINE?'Everyone on Gameday, A to Z. Search, or scroll.':'Friends across phones need the shared list — this copy is running on this phone only for now.')+'</div><div class="nm" style="margin-top:10px"><input id="afQ" placeholder="Search by name…" autocomplete="off"></div><div class="aflist" id="afList"><div class="note">…</div></div>';
+  $('#mo').classList.add('on'); $('#moX').onclick=()=>$('#mo').classList.remove('on'); setTimeout(()=>$('#afQ').focus(),60);
+  let all=[]; const draw2=()=>{ const q=$('#afQ').value.trim().toLowerCase(); const rows=all.filter(u=>!u.me&&(!q||u.name.toLowerCase().includes(q)));
+    $('#afList').innerHTML=rows.length?rows.map(u=>{ const t=T[u.team]?tm(u.team):null; return '<div class="mem" data-u="'+u.id+'">'+(t?'<img src="'+t.logo+'" alt="">':'<span class="av" style="background:#333">'+esc(u.name.slice(0,2).toUpperCase())+'</span>')+'<div>'+esc(u.name)+'<div class="s">'+(t?esc(t.name):'')+(u.ghost?' · 👻':'')+'</div></div><div class="x">'+(u.friend?'<button data-view="'+u.id+'">Schedule</button><button data-unf="'+u.id+'">Remove</button>':'<button class="acc" data-add="'+u.id+'">Add</button>')+'</div></div>'; }).join(''):'<div class="note">'+(ONLINE?(q?'Nobody by that name yet.':'Nobody else yet — tell the boys.'):'Not connected.')+'</div>';
+    $('#afList').querySelectorAll('[data-add]').forEach(b=>b.onclick=async()=>{ try{ await apiJ('/friends',{method:'POST',body:JSON.stringify({token:tok(),user:b.dataset.add})}); toast('Added'); all=await apiJ('/users?token='+encodeURIComponent(tok())); draw2(); pullFriends(); }catch(e){ toast(e.message); } });
+    $('#afList').querySelectorAll('[data-unf]').forEach(b=>b.onclick=async()=>{ try{ await apiJ('/friends/'+b.dataset.unf+'?token='+encodeURIComponent(tok()),{method:'DELETE'}); all=await apiJ('/users?token='+encodeURIComponent(tok())); draw2(); pullFriends(); }catch(e){ toast(e.message); } });
+    $('#afList').querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>viewSchedule(b.dataset.view)); };
+  $('#afQ').oninput=draw2;
+  if(ONLINE){ try{ all=await apiJ('/users?token='+encodeURIComponent(tok())); }catch(e){ all=[]; } } draw2(); }
+$('#addFriend').onclick=()=>{ sideOpen(false); addFriendModal(); };
+
+/* a friend's schedule — the same clean list as mine, read-only; ghosts stay closed */
+async function viewSchedule(uid){ let s; try{ s=await apiJ('/schedule/'+uid+'?token='+encodeURIComponent(tok())); }catch(e){ toast(e.message); return; }
+  const t=T[s.team]?tm(s.team):null; const games=Object.keys(s.games||{}).map(id=>G.find(g=>g.id===id)).filter(Boolean).sort((x,y)=>new Date(x.date)-new Date(y.date));
+  const mc=$('#mc'); mc.innerHTML='<button class="x" id="moX">×</button><h2 style="margin:0 0 2px">'+esc(s.name)+'</h2><div class="sub">'+(t?esc(t.name)+' · ':'')+(s.hidden?'👻 ghost mode — schedule hidden':games.length+' game'+(games.length===1?'':'s'))+'</div><div class="fsched">'+
+    (s.hidden?'':(games.length?games.map(g=>{ const a=tm(g.a.id),b=tm(g.h.id); const tk=(s.games[g.id]||{}).tickets; return '<div class="ms t'+tier(hype(g))+'"><div class="r1"><span class="wk">WK '+g.wk+'</span><img src="'+a.logo+'" alt=""><b>'+esc(a.ab)+'</b><span class="at">'+(g.neutral?'vs':'@')+'</span><b>'+esc(b.ab)+'</b><img src="'+b.logo+'" alt=""></div><div class="r2">'+esc(et(g.date,{weekday:'short',month:'short',day:'numeric'}))+' · '+esc(g.city)+(tk==='yes'?' · 🎟 has tickets':tk==='no'?' · no tickets yet':'')+'</div></div>'; }).join(''):'<div class="note">Not going anywhere yet.</div>'))+'</div>';
+  $('#mo').classList.add('on'); $('#moX').onclick=()=>$('#mo').classList.remove('on'); }
+
+/* friends pane: real friends first (with Schedule), then people added on this phone only */
+function paintFriends(){ const box=$('#frList'); if(!box) return; box.innerHTML=FRIENDS.length?FRIENDS.map(f=>{ const t=T[f.team]?tm(f.team):null; const n=Object.keys(f.games||{}).length; return '<div class="mem" data-u="'+f.id+'">'+(t?'<img src="'+t.logo+'" alt="">':'')+'<div>'+esc(f.name)+'<div class="s">'+(t?esc(t.short)+' · ':'')+(f.hidden?'👻 ghost mode':n+' game'+(n===1?'':'s'))+'</div></div><div class="x"><button data-view="'+f.id+'">Schedule</button>'+(t?'<button data-cmp="'+f.team+'">Compare</button>':'')+'</div></div>'; }).join(''):'<div class="note">'+(ONLINE?'No friends yet. Tap <b>＋ Add friend</b> up top.':'')+'</div>';
+  box.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>viewSchedule(b.dataset.view)); box.querySelectorAll('[data-cmp]').forEach(b=>b.onclick=()=>{ $('#crew').classList.remove('open'); setSecond(b.dataset.cmp); });
+  $('#crewN').textContent=FRIENDS.length+CREW.filter(c=>!c.me).length; }
+$('#ghostLink').addEventListener('click',()=>{ if(ONLINE) apiJ('/me',{method:'PUT',body:JSON.stringify({token:tok(),ghost:!!PROF.ghost})}).catch(()=>{}); });
+
+setTimeout(syncMe, 800);   // after the first draw; harmless when there is no shared layer
 
 /* suggestion box: goes to Brooks's inbox. On the VPS copy it uses a tiny local route; on the public
    copy it goes through Web3Forms (key baked in) and never touches the VPS — no key, no box. */
