@@ -128,7 +128,7 @@ a{color:inherit}button{font:inherit;cursor:pointer}
   <button class="it" id="bigLink"><span class="ic">🔥</span>Biggest games</button>
   <div class="sec">You</div>
   <button class="it" id="ghostLink"><span class="ic">👻</span>Ghost mode<span class="n" id="ghostState">Off</span></button>
-  <button class="it" id="tourLink"><span class="ic">✨</span>How it works</button>
+  <button class="it" id="tourLink"><span class="ic">✨</span>Tutorial</button>
   <button class="it" id="sugLink"><span class="ic">💡</span>Suggest something</button>
   <div class="sp"></div>
 </aside>
@@ -401,14 +401,14 @@ const TOUR=[
   {el:'#myBtn',t:'My schedule',b:'A clean list of your games, your off weekends, and whether you have tickets yet. Say "not yet" and it shows you where to get them.',side:true},
   {el:'#addFriend',t:'Add a friend',b:'Find people by name and see their schedule — who\'s going where, all season.'},
   {el:'#ghostLink',t:'Ghost mode',b:'Flip this on and nobody can see your schedule. Off, and your friends can.',side:true},
-  {el:'#tourLink',t:'This tour, any time',b:'It lives right here under How it works. That\'s it — go pick a game.',side:true}];
+  {el:'#tourLink',t:'This tutorial, any time',b:'It lives right here under Tutorial. That\'s it — go pick a game.',side:true}];
 let TI=0;
 function tour(){ TI=0; $('#tourbg').classList.add('on'); tourStep(); }
 function tourEnd(){ $('#tourbg').classList.remove('on'); $('#tourRing').style.display='none'; $('#tourCard').style.display='none'; PROF.tourDone=true; saveProf(); if(innerWidth<1100) sideOpen(false); }
 function tourStep(){ const s=TOUR[TI]; if(!s){ tourEnd(); return; } if(s.side) sideOpen(true); else if(innerWidth<1100) sideOpen(false);
   setTimeout(()=>{ const el=document.querySelector(s.el); const ring=$('#tourRing'), card=$('#tourCard'); if(el){ el.scrollIntoView({block:'center',behavior:'smooth'}); }
-    setTimeout(()=>{ const r=el?el.getBoundingClientRect():{left:innerWidth/2-40,top:innerHeight/2-20,width:80,height:40,bottom:innerHeight/2+20}; ring.style.display=''; ring.style.left=(r.left-8)+'px'; ring.style.top=(r.top-8)+'px'; ring.style.width=(r.width+16)+'px'; ring.style.height=(r.height+16)+'px';
-      card.style.display=''; card.innerHTML='<div class="dots">'+TOUR.map((_,i)=>'<i class="'+(i===TI?'on':'')+'"></i>').join('')+'</div><h3>'+esc(s.t)+'</h3><p>'+esc(s.b)+'</p><div class="row"><button id="tSkip">Skip</button><span class="sp"></span>'+(TI?'<button id="tBack">Back</button>':'')+'<button class="acc" id="tNext">'+(TI===TOUR.length-1?'Done':'Next')+'</button></div>';
+    setTimeout(()=>{ const r=el?el.getBoundingClientRect():{left:innerWidth/2-40,top:innerHeight/2-20,width:80,height:40,bottom:innerHeight/2+20}; ring.style.display='block'; ring.style.left=(r.left-8)+'px'; ring.style.top=(r.top-8)+'px'; ring.style.width=(r.width+16)+'px'; ring.style.height=(r.height+16)+'px';
+      card.style.display='block'; card.innerHTML='<div class="dots">'+TOUR.map((_,i)=>'<i class="'+(i===TI?'on':'')+'"></i>').join('')+'</div><h3>'+esc(s.t)+'</h3><p>'+esc(s.b)+'</p><div class="row"><button id="tSkip">Skip</button><span class="sp"></span>'+(TI?'<button id="tBack">Back</button>':'')+'<button class="acc" id="tNext">'+(TI===TOUR.length-1?'Done':'Next')+'</button></div>';
       const below=r.bottom+16+card.offsetHeight<innerHeight; card.style.top=(below?r.bottom+16:Math.max(12,r.top-card.offsetHeight-16))+'px'; card.style.left=Math.max(12,Math.min(innerWidth-card.offsetWidth-12,r.left+r.width/2-card.offsetWidth/2))+'px';
       $('#tSkip').onclick=tourEnd; $('#tNext').onclick=()=>{ TI++; tourStep(); }; if($('#tBack')) $('#tBack').onclick=()=>{ TI--; tourStep(); }; },350); },s.side?380:0); }
 $('#tourbg').onclick=e=>{ if(e.target.id==='tourbg') tourEnd(); };
