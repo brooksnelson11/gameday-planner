@@ -463,7 +463,7 @@ paintGhost(); paintMe();
    STORE talks to the shared layer when one is reachable (the VPS copy now; the public copy once its
    static-safe backend exists). Without one, everything keeps working on this phone exactly as before.
    The local crew list is never deleted: it shows as "on this phone" until those people join for real. */
-const PUBLIC_API='';
+const PUBLIC_API='https://gameday-api.brooksnelson22.workers.dev/api/gameday';
 const ON_VPS=/\.ts\.net$/.test(location.hostname)||location.hostname==='localhost'||/^127\./.test(location.hostname);   // the tailnet copy is the only one with a VPS backend
 const API_BASE=ON_VPS?'/api/gameday':(PUBLIC_API||null);
 const DK='gd_device_v1'; let DEVICE=localStorage.getItem(DK)||(()=>{ const d=Math.random().toString(36).slice(2)+Date.now().toString(36); localStorage.setItem(DK,d); return d; })();
